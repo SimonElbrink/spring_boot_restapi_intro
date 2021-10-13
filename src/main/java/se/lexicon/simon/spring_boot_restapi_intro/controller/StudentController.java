@@ -1,33 +1,33 @@
 package se.lexicon.simon.spring_boot_restapi_intro.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import se.lexicon.simon.spring_boot_restapi_intro.service.StudentService;
 import se.lexicon.simon.spring_boot_restapi_intro.model.Student;
 
 import java.net.URI;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
 
+/**
+ * A place for handling the endpoints for the java program.
+ * Clients can then access the methods through Http methods and the Path.
+ */
 @RestController
 public class StudentController {
 
 
-    private List<Student> students = new ArrayList<>(
-            Arrays.asList(
-                    new Student("123456","Simon", "Elbrink", LocalDate.parse("1997-03-18"),"1997-03-18-0000", "Nygatan 8 Lenhovda"),
-                    new Student("asdf", "Erik", "Svensson", LocalDate.parse("1976-01-01"),"1976-01-01-0000","Växjö SomeWhereStreet")
-            )
-    );
+    private final StudentService studentService;
 
+    @Autowired
+    public StudentController(StudentService studentService) {
+        this.studentService = studentService;
+    }
 
-    @GetMapping("/firstresource")
+        @GetMapping("/firstresource")
     public ResponseEntity<Student> getResource(){
 
-        return ResponseEntity.status(HttpStatus.valueOf(200)).body(students.get(0));
+        return ResponseEntity.status(HttpStatus.valueOf(200)).body(studentService.findById("123456"));
     }
 
 //    @GetMapping("/api/students")
@@ -43,19 +43,18 @@ public class StudentController {
     @PostMapping("/api/students")
     public ResponseEntity<Student> create(@RequestBody Student student){
 
-        students.add(student);
+        Student saved = studentService.create(student);
 
-        return ResponseEntity.created(URI.create("localhost:8080/api/student/" + student.getStudentId())).body(student);
+        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
+//        return ResponseEntity.created(URI.create("localhost:8080/api/students/" + saved.getStudentId())).body(saved);
     }
 
     @GetMapping("api/students/{id}")
     public ResponseEntity<Student> findById( @PathVariable("id") String studentId){
 
-        Optional<Student> foundStudent = students.stream()
-                .filter(student -> student.getStudentId().equals(studentId))
-                .findFirst();
+        Student foundStudentById = studentService.findById(studentId);
 
-        return ResponseEntity.ok(foundStudent.get());
+        return ResponseEntity.ok(foundStudentById);
 
     }
 
@@ -67,11 +66,11 @@ public class StudentController {
 
         switch (type.toLowerCase().trim()){
             case "all":
-                return ResponseEntity.ok(students);
+                return ResponseEntity.ok(studentService.findAll());
             case "firstname":
-                return ResponseEntity.ok(students.stream().filter(student -> student.getFirstName().equals(value)));
+                return ResponseEntity.ok(studentService.findByFirstName(value));
             case "id":
-                return ResponseEntity.ok(students.stream().filter(student -> student.getStudentId().equals(value)).findFirst());
+                return ResponseEntity.ok(studentService.findById(value));
             default:
                 return ResponseEntity.badRequest().body("Invalid Type");
         }
@@ -83,18 +82,9 @@ public class StudentController {
 
         if (studentId.equals(student.getStudentId())){
 
-            Student original = students.stream().filter(s -> s.getStudentId().equals(studentId)).findFirst().get();
-//            students.remove(original);
+            Student updatedStudent = studentService.update(student);
 
-            original.setFirstName(student.getFirstName());
-            original.setLastName(student.getLastName());
-            original.setBirthDate(student.getBirthDate());
-            original.setPsn(student.getPsn());
-            original.setAddress(student.getAddress());
-
-//            students.add(original);
-
-            return ResponseEntity.ok().body(original);
+            return ResponseEntity.ok().body(updatedStudent);
         }else
             return ResponseEntity.badRequest().build();
     }
@@ -102,14 +92,10 @@ public class StudentController {
     @DeleteMapping("/api/students/{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") String studentId){
 
-        Student original = students.stream().filter(s -> s.getStudentId().equals(studentId)).findFirst().get();
+        studentService.delete(studentId);
 
-        boolean wasRemoved = students.remove(original);
+        return ResponseEntity.ok().build();
 
-        if (wasRemoved){
-            return ResponseEntity.ok().build();
-        }else {
-            return ResponseEntity.badRequest().build();}
     }
 
 }
