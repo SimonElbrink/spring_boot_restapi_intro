@@ -47,9 +47,9 @@ public class StudentService {
     }
 
 
-    public Collection<Student> findByFirstName(String firstName){
+    public Collection<Student> findAllByName(String firstName){
 
-        List<Student> found = studentRepo.findAllByFirstNameContainingIgnoreCase(firstName);
+        List<Student> found = studentRepo.findAllByNameContainingIgnoreCase(firstName);
 
         return found;
     }

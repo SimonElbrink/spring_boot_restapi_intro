@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.*;
 import se.lexicon.simon.spring_boot_restapi_intro.service.StudentService;
 import se.lexicon.simon.spring_boot_restapi_intro.model.Student;
 
-import java.net.URI;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.TreeSet;
 
 /**
  * A place for handling the endpoints for the java program.
@@ -58,22 +60,42 @@ public class StudentController {
 
     }
 
+//    @GetMapping("/api/students")
+//    public ResponseEntity<?> genericFind(
+//          @RequestParam(name = "type", defaultValue = "all")  String type,
+//          @RequestParam(name = "value", defaultValue = "all")  String value
+//    ){
+//
+//        switch (type.toLowerCase().trim()){
+//            case "all":
+//                return ResponseEntity.ok(studentService.findAll());
+//            case "firstname":
+//                return ResponseEntity.ok(studentService.findAllByName(value));
+//            case "id":
+//                return ResponseEntity.ok(studentService.findById(value));
+//            default:
+//                return ResponseEntity.badRequest().body("Invalid Type");
+//        }
+//    }
     @GetMapping("/api/students")
     public ResponseEntity<?> genericFind(
-          @RequestParam(name = "type", defaultValue = "all")  String type,
-          @RequestParam(name = "value", defaultValue = "all")  String value
+          @RequestParam(name = "name", required = false)  String name,
+          @RequestParam(name = "id", required = false)  String id
     ){
 
-        switch (type.toLowerCase().trim()){
-            case "all":
-                return ResponseEntity.ok(studentService.findAll());
-            case "firstname":
-                return ResponseEntity.ok(studentService.findByFirstName(value));
-            case "id":
-                return ResponseEntity.ok(studentService.findById(value));
-            default:
-                return ResponseEntity.badRequest().body("Invalid Type");
+        ResponseEntity<Collection<Student>> response = ResponseEntity.badRequest().build();
+        HashSet<Student> matches = new HashSet<>();
+
+        if (id != null){
+            matches.add(studentService.findById(id));
+        } else if (name != null){
+            matches.addAll(studentService.findAllByName(name));
+        } else {
+            matches.addAll(studentService.findAll());
         }
+
+        return matches.isEmpty() ? response : ResponseEntity.ok(matches);
+
     }
 
     @PutMapping("/api/students/{id}")

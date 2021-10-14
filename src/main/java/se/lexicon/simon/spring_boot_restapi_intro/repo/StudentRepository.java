@@ -15,6 +15,8 @@ import java.util.List;
  */
 public interface StudentRepository extends JpaRepository<Student, String> {
 
-     @Query("SELECT s FROM Student s WHERE UPPER(s.firstName) LIKE UPPER(CONCAT('%',:name,'%'))")
-    List<Student> findAllByFirstNameContainingIgnoreCase(@Param("name") String firstName);
+    @Query("SELECT s FROM Student s WHERE UPPER(s.firstName) LIKE UPPER(CONCAT('%',:name,'%')) " +
+            "OR " +
+            "UPPER(s.lastName) LIKE UPPER(CONCAT('%', :name, '%')) ")
+    List<Student> findAllByNameContainingIgnoreCase(@Param("name") String name);
 }

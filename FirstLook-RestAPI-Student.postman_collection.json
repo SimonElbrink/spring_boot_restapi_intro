@@ -6,165 +6,216 @@
 	},
 	"item": [
 		{
-			"name": "create Student",
-			"event": [
+			"name": "Studentcontroller",
+			"item": [
 				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"studentId\": \"MyCustomId\",\r\n    \"firstName\": \"Simon\",\r\n    \"lastName\": \"Elbrink\",\r\n    \"birthDate\": \"1900-12-23\",\r\n    \"psn\": \"123993923\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "localhost:8080/api/students",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"students"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "findAll",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "localhost:8080/api/students",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"students"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "findallByFirstName",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "localhost:8080/api/students?type=firstname&value=Simon",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"students"
-					],
-					"query": [
+					"name": "create Student",
+					"event": [
 						{
-							"key": "type",
-							"value": "firstname"
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"Simon\",\r\n    \"lastName\": \"Elbrink\",\r\n    \"birthDate\": \"1900-12-23\",\r\n    \"psn\": \"123993923\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
 						},
-						{
-							"key": "value",
-							"value": "Simon"
-						},
-						{
-							"key": "",
-							"value": null,
-							"disabled": true
+						"url": {
+							"raw": "localhost:8080/api/students",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"students"
+							]
 						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "findById",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "localhost:8080/api/students/MyCustomId",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"students",
-						"MyCustomId"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "update Student",
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"studentId\": \"MyCustomId\",\r\n    \"firstName\": \"Simon\",\r\n    \"lastName\": \"Elbrink\",\r\n    \"birthDate\": \"1900-12-23\",\r\n    \"psn\": \"0987654321\",\r\n    \"address\": \"Some Street!\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "localhost:8080/api/students/MyCustomId",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"students",
-						"MyCustomId"
-					]
+				{
+					"name": "findAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/students",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"students"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "find by invalid type ERROR",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/students?type=invalidtype",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"students"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "invalidtype"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "findById PathVariable",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/students/eb18acbf-dcf7-41cc-8078-70783f4fd206",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"students",
+								"eb18acbf-dcf7-41cc-8078-70783f4fd206"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "findallById RequestParam",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/students?id=eb18acbf-dcf7-41cc-8078-70783f4fd206",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"students"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "id",
+									"value": "eb18acbf-dcf7-41cc-8078-70783f4fd206"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "findallByName",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/students?name=simon",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"students"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "simon"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update Student",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"studentId\": \"eb18acbf-dcf7-41cc-8078-70783f4fd206\",\r\n    \"firstName\": \"Simon\",\r\n    \"lastName\": \"Elbrink\",\r\n    \"birthDate\": \"1900-12-23\",\r\n    \"psn\": \"0987654321\",\r\n    \"address\": \"Some Street!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/students/eb18acbf-dcf7-41cc-8078-70783f4fd206",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"students",
+								"eb18acbf-dcf7-41cc-8078-70783f4fd206"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Student",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/students/MyCustomId",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"students",
+								"MyCustomId"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
-		},
-		{
-			"name": "Delete Student",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "localhost:8080/api/students/MyCustomId",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"students",
-						"MyCustomId"
-					]
-				}
-			},
-			"response": []
+			]
 		}
 	]
 }

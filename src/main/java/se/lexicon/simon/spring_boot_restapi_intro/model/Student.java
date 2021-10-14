@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
-public class Student {
+public class Student{
 
     @Id
     @GeneratedValue(generator = "uuid")
@@ -106,4 +106,6 @@ public class Student {
                 ", address='" + address + '\'' +
                 '}';
     }
+
+
 }
