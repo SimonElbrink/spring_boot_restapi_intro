@@ -25,6 +25,14 @@ public class Student{
     public Student() {
     }
 
+    public Student(String firstName, String lastName, LocalDate birthDate, String psn, String address) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthDate = birthDate;
+        this.psn = psn;
+        this.address = address;
+    }
+
     public Student(String studentId, String firstName, String lastName, LocalDate birthDate, String psn, String address) {
         this.studentId = studentId;
         this.firstName = firstName;

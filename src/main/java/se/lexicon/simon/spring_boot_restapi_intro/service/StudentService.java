@@ -3,6 +3,10 @@ package se.lexicon.simon.spring_boot_restapi_intro.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import se.lexicon.simon.spring_boot_restapi_intro.dto.StudentDto;
+import se.lexicon.simon.spring_boot_restapi_intro.dto.StudentDtoAll;
+import se.lexicon.simon.spring_boot_restapi_intro.dto.StudentFormDto;
+import se.lexicon.simon.spring_boot_restapi_intro.exception.ResourceNotFoundException;
 import se.lexicon.simon.spring_boot_restapi_intro.model.Student;
 import se.lexicon.simon.spring_boot_restapi_intro.repo.StudentRepository;
 
@@ -18,54 +22,65 @@ import java.util.*;
 public class StudentService {
 
 
-    StudentRepository studentRepo;
+    private final StudentRepository studentRepo;
+    private final ConversionService convert;
 
     @Autowired
-    public StudentService(StudentRepository studentRepo) {
+    public StudentService(StudentRepository studentRepo, ConversionService convert) {
         this.studentRepo = studentRepo;
+        this.convert = convert;
     }
 
     //CRUD
 
-    public Student create(Student student){
+    public StudentDtoAll create(StudentFormDto form){
+
+       Student student = convert.toStudent(form);
 
         Student saved = studentRepo.save(student);
 
-        return saved;
+        return convert.toStudentDtoAll(saved);
     }
 
-    public Student findById(String id){
+    public StudentDtoAll findById(String id){
 
         Optional<Student> foundStudent = studentRepo.findById(id);
 
 
-        return foundStudent.orElseThrow(IllegalArgumentException::new);
+        if (foundStudent.isPresent()){
+            return convert.toStudentDtoAll(foundStudent.get());
+        } else{
+            throw new ResourceNotFoundException("Could not find Student With id: " + id);
+        }
+
     }
 
-    public Collection<Student> findAll(){
-        return studentRepo.findAll();
+    public Collection<StudentDto> findAll(){
+        return convert.toStudentDtoList(studentRepo.findAll());
     }
 
 
-    public Collection<Student> findAllByName(String firstName){
-
-        List<Student> found = studentRepo.findAllByNameContainingIgnoreCase(firstName);
-
-        return found;
+    public Collection<StudentDto> findAllByName(String firstName){
+        return convert.toStudentDtoList(studentRepo.findAllByNameContainingIgnoreCase(firstName));
     }
 
     @Transactional
-    public Student update(Student student){
+    public StudentDtoAll update(String id, StudentFormDto student){
 
-        Student original = studentRepo.findById(student.getStudentId()).get();
+        Optional<Student> original = studentRepo.findById(id);
 
-        original.setFirstName(student.getFirstName());
-        original.setLastName(student.getLastName());
-        original.setBirthDate(student.getBirthDate());
-        original.setPsn(student.getPsn());
-        original.setAddress(student.getAddress());
+        //Throws null pointer if not found,
+        // updating the values in the Database (Transactional needed)
+        original.ifPresent((s)->{
+            s.setFirstName(student.getFirstName());
+            s.setLastName(student.getLastName());
+            s.setBirthDate(student.getBirthDate());
+            s.setPsn(student.getPsn());
+            s.setAddress(student.getAddress());
+        });
 
-        return original;
+        return convert.toStudentDtoAll(original.get());
+
     }
 
     public void delete(String studentId){
