@@ -60,43 +60,43 @@ public class StudentController {
 
     }
 
-//    @GetMapping("/api/students")
-//    public ResponseEntity<?> genericFind(
-//          @RequestParam(name = "type", defaultValue = "all")  String type,
-//          @RequestParam(name = "value", defaultValue = "all")  String value
-//    ){
-//
-//        switch (type.toLowerCase().trim()){
-//            case "all":
-//                return ResponseEntity.ok(studentService.findAll());
-//            case "firstname":
-//                return ResponseEntity.ok(studentService.findAllByName(value));
-//            case "id":
-//                return ResponseEntity.ok(studentService.findById(value));
-//            default:
-//                return ResponseEntity.badRequest().body("Invalid Type");
-//        }
-//    }
     @GetMapping("/api/students")
     public ResponseEntity<?> genericFind(
-          @RequestParam(name = "name", required = false)  String name,
-          @RequestParam(name = "id", required = false)  String id
+          @RequestParam(name = "type", defaultValue = "all")  String type,
+          @RequestParam(name = "value", defaultValue = "all")  String value
     ){
 
-        ResponseEntity<Collection<Student>> response = ResponseEntity.badRequest().build();
-        HashSet<Student> matches = new HashSet<>();
-
-        if (id != null){
-            matches.add(studentService.findById(id));
-        } else if (name != null){
-            matches.addAll(studentService.findAllByName(name));
-        } else {
-            matches.addAll(studentService.findAll());
+        switch (type.toLowerCase().trim()){
+            case "all":
+                return ResponseEntity.ok(studentService.findAll());
+            case "name":
+                return ResponseEntity.ok(studentService.findAllByName(value));
+            case "id":
+                return ResponseEntity.ok(studentService.findById(value));
+            default:
+                throw new IllegalArgumentException("Invalid Type: " + type + " Valid types are: all, name, id");
         }
-
-        return matches.isEmpty() ? response : ResponseEntity.ok(matches);
-
     }
+//    @GetMapping("/api/students")
+//    public ResponseEntity<?> genericFind(
+//          @RequestParam(name = "name", required = false)  String name,
+//          @RequestParam(name = "id", required = false)  String id
+//    ){
+//
+//        ResponseEntity<Collection<Student>> response = ResponseEntity.badRequest().build();
+//        HashSet<Student> matches = new HashSet<>();
+//
+//        if (id != null){
+//            matches.add(studentService.findById(id));
+//        } else if (name != null){
+//            matches.addAll(studentService.findAllByName(name));
+//        } else {
+//            matches.addAll(studentService.findAll());
+//        }
+//
+//        return matches.isEmpty() ? response : ResponseEntity.ok(matches);
+//
+//    }
 
     @PutMapping("/api/students/{id}")
     public ResponseEntity<Student> update(@PathVariable("id") String studentId,
