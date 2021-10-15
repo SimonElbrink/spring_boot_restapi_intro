@@ -13,34 +13,28 @@ import java.time.LocalDateTime;
 public class MyControllerAdviser {
 
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<MyExceptionResponse> handleIllegalArgumentException(IllegalArgumentException ex, WebRequest request){
-
-        MyExceptionResponse response = new MyExceptionResponse(
+    private MyExceptionResponse build(HttpStatus httpStatus, String ex, WebRequest request) {
+        return new MyExceptionResponse(
                 LocalDateTime.now(),
-                HttpStatus.BAD_REQUEST.value(),
-                HttpStatus.BAD_REQUEST.name(),
-                ex.getMessage(),
+                httpStatus.value(),
+                httpStatus.name(),
+                ex,
                 request.getDescription(false)
         );
-
-       return ResponseEntity.badRequest().body(response);
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public MyExceptionResponse handleIllegalArgumentException(IllegalArgumentException ex, WebRequest request){
+        return build(HttpStatus.BAD_REQUEST, ex.getMessage(), request);
+    }
 
     @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
     public MyExceptionResponse handleResourceNotFoundException(ResourceNotFoundException ex, WebRequest request){
-
-        return new MyExceptionResponse(
-                LocalDateTime.now(),
-                HttpStatus.BAD_REQUEST.value(),
-                HttpStatus.BAD_REQUEST.name(),
-                ex.getMessage(),
-                request.getDescription(false)
-        );
-
+        return build(HttpStatus.BAD_REQUEST, ex.getMessage(), request);
     }
 
 
