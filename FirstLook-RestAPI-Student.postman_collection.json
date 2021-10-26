@@ -26,7 +26,46 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"firstName\": \"Simon\",\r\n    \"lastName\": \"Elbrink\",\r\n    \"birthDate\": \"1900-12-23\",\r\n    \"psn\": \"123993923\"\r\n}",
+							"raw": "{\r\n    \"firstName\": \"Simon\",\r\n    \"lastName\": \"Elbrink\",\r\n    \"birthDate\": \"1900-12-23\",\r\n    \"psn\": \"19901231-3955\",\r\n    \"address\": \"Some street!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/students",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"students"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create Student Failed",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"Simon\",\r\n    \"lastName\": \"Elbrink\",\r\n    \"birthDate\": \"1900-12-23\",\r\n    \"psn\": \"123993923\",\r\n    \"address\": \"Some street!\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -97,7 +136,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/students/eb18acbf-dcf7-41cc-8078-70783f4fd206",
+							"raw": "localhost:8080/api/students/3cac01d8-7698-428b-ba82-c83d34b83ff0",
 							"host": [
 								"localhost"
 							],
@@ -105,7 +144,7 @@
 							"path": [
 								"api",
 								"students",
-								"eb18acbf-dcf7-41cc-8078-70783f4fd206"
+								"3cac01d8-7698-428b-ba82-c83d34b83ff0"
 							]
 						}
 					},
@@ -147,7 +186,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/students?name=simon",
+							"raw": "localhost:8080/api/students?type=name&value=simon",
 							"host": [
 								"localhost"
 							],
@@ -158,7 +197,11 @@
 							],
 							"query": [
 								{
-									"key": "name",
+									"key": "type",
+									"value": "name"
+								},
+								{
+									"key": "value",
 									"value": "simon"
 								}
 							]
@@ -173,7 +216,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"studentId\": \"eb18acbf-dcf7-41cc-8078-70783f4fd206\",\r\n    \"firstName\": \"Simon\",\r\n    \"lastName\": \"Elbrink\",\r\n    \"birthDate\": \"1900-12-23\",\r\n    \"psn\": \"0987654321\",\r\n    \"address\": \"Some Street!\"\r\n}",
+							"raw": "{\r\n    \"firstName\": \"Simon\",\r\n    \"lastName\": \"Elbrink\",\r\n    \"birthDate\": \"1900-12-23\",\r\n    \"psn\": \"0987654321\",\r\n    \"address\": \"Some Other Street!\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -181,7 +224,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8080/api/students/eb18acbf-dcf7-41cc-8078-70783f4fd206",
+							"raw": "localhost:8080/api/students/3cac01d8-7698-428b-ba82-c83d34b83ff0",
 							"host": [
 								"localhost"
 							],
@@ -189,7 +232,7 @@
 							"path": [
 								"api",
 								"students",
-								"eb18acbf-dcf7-41cc-8078-70783f4fd206"
+								"3cac01d8-7698-428b-ba82-c83d34b83ff0"
 							]
 						}
 					},

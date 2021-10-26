@@ -10,6 +10,7 @@ import se.lexicon.simon.spring_boot_restapi_intro.dto.StudentFormDto;
 import se.lexicon.simon.spring_boot_restapi_intro.service.StudentService;
 import se.lexicon.simon.spring_boot_restapi_intro.model.Student;
 
+import javax.validation.Valid;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.TreeSet;
@@ -46,7 +47,7 @@ public class StudentController {
 
 
     @PostMapping("/api/students")
-    public ResponseEntity<StudentDtoAll> create(@RequestBody StudentFormDto student){
+    public ResponseEntity<StudentDtoAll> create(@Valid @RequestBody StudentFormDto student){
 
         StudentDtoAll saved = studentService.create(student);
 
@@ -103,7 +104,7 @@ public class StudentController {
 
     @PutMapping("/api/students/{id}")
     public ResponseEntity<StudentDtoAll> update(@PathVariable("id") String studentId,
-                                          @RequestBody StudentFormDto student ){
+                                         @Valid @RequestBody StudentFormDto student ){
 
             return ResponseEntity.ok().body(studentService.update(studentId, student));
 
